@@ -18,7 +18,7 @@ def get_db():
         db.close()
 
 
-@router.get("/")
+@router.get("")
 def get_dashboard(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
@@ -32,6 +32,9 @@ def get_dashboard(
     completed_lessons = db.query(Progress).filter(
         Progress.user_id == current_user.id
     ).count()
+
+    total_lessons = db.query(Lesson).count()
+    progress_percentage = round((completed_lessons / total_lessons * 100), 2) if total_lessons > 0 else 0
 
     return {
     "level": current_user.level,
