@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"
-import { login } from "../api/auth"
 import { useContext } from "react"
 import { AuthContext } from "../context/AuthContext"
 
