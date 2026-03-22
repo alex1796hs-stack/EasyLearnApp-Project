@@ -39,10 +39,15 @@ function Placement() {
     // 🔵 enviar test
     const handleSubmit = async () => {
 
+        const formattedAnswers = Object.entries(answers).map(([question_id, answer]) => ({
+            question_id: parseInt(question_id, 10),
+            answer
+        }))
+
         try {
 
             const res = await api.post("/placement/submit", {
-                answers
+                answers: formattedAnswers
             })
 
             setResult(res.data)
@@ -88,7 +93,9 @@ function Placement() {
                         <button
                             key={opt}
                             onClick={() => handleAnswer(q.id, opt)}
-                            className="block border p-2 mb-2 w-full text-left"
+                            className={`block border p-2 mb-2 w-full text-left transition-colors ${
+                                answers[q.id] === opt ? "bg-blue-100 border-blue-500 font-medium" : "hover:bg-gray-50"
+                            }`}
                         >
                             {opt}
                         </button>
