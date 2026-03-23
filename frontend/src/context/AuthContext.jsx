@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
 
         setToken(data.access_token)
 
+        return data
     }
 
     const logout = () => {

@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react"
-import { login } from "../api/auth"
 import { useContext } from "react"
 import { AuthContext } from "../context/AuthContext"
+import { useNavigate } from "react-router-dom"
+import api from "../api/api"
 
 function Login() {
     const { login } = useContext(AuthContext)
@@ -9,6 +10,7 @@ function Login() {
     const [password, setPassword] = useState("")
     const [error, setError] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
+    const navigate = useNavigate()
 
     const handleLogin = async (e) => {
 
@@ -19,9 +21,18 @@ function Login() {
 
         try {
 
-            const data = await login(username, password)
-
-            console.log("JWT:", data)
+            await login(username, password)
+            
+            // Ya el token fue guardado por AuthContext.login
+            
+            // Obtener datos del dashboard para ver si hay level
+            const res = await api.get("/dashboard")
+            
+            if (!res.data.level) {
+                navigate("/placement")
+            } else {
+                navigate("/dashboard")
+            }
 
         } catch (err) {
 

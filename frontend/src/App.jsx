@@ -1,11 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/login';
+import Placement from "./pages/Placement"
 
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/placement" element={<Placement />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/" element={
