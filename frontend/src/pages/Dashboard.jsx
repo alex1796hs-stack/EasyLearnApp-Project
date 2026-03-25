@@ -47,15 +47,32 @@ function Dashboard() {
                 Dashboard
             </h1>
 
-            <div className="bg-white p-4 rounded shadow">
+            {!data.level ? (
+                <div className="bg-blue-50 border-2 border-blue-200 p-6 rounded-xl shadow-sm text-center">
+                    <h2 className="text-xl font-bold text-blue-800 mb-2">
+                        ¡Bienvenido a EasyLearn!
+                    </h2>
+                    <p className="text-blue-600 mb-4">
+                        ¡Vamos a comprobar tu nivel para asignarte unos estudios adaptados a ti!
+                    </p>
+                    <button 
+                        onClick={() => navigate("/placement")}
+                        className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                    >
+                        Empezar Test de Nivel
+                    </button>
+                </div>
+            ) : (
+                <div className="bg-white p-4 rounded shadow">
 
-                <p><strong>Level:</strong> {data.level}</p>
-                <p><strong>Placement Score:</strong> {data.placement_score}</p>
-                <p><strong>Completed Lessons:</strong> {data.completed_lessons}</p>
-                <p><strong>Total Lessons:</strong> {data.total_lessons}</p>
-                <p><strong>Progress:</strong> {data.progress_percentage}%</p>
+                    <p><strong>Level:</strong> {data.level}</p>
+                    <p><strong>Placement Score:</strong> {data.placement_score}</p>
+                    <p><strong>Completed Lessons:</strong> {data.completed_lessons}</p>
+                    <p><strong>Total Lessons:</strong> {data.total_lessons}</p>
+                    <p><strong>Progress:</strong> {data.progress_percentage}%</p>
 
-            </div>
+                </div>
+            )}
 
         </div>
     )

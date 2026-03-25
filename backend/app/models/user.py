@@ -9,4 +9,4 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     password_hash = Column(String)
 
-    level = Column(String, default="A1")
+    level = Column(String, nullable=True)
