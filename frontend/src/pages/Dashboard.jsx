@@ -70,6 +70,13 @@ function Dashboard() {
                     <p><strong>Completed Lessons:</strong> {data.completed_lessons}</p>
                     <p><strong>Total Lessons:</strong> {data.total_lessons}</p>
                     <p><strong>Progress:</strong> {data.progress_percentage}%</p>
+                    
+                    <button 
+                        onClick={() => navigate("/lessons")}
+                        className="mt-6 w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition shadow"
+                    >
+                        🚀 Ir a mis lecciones
+                    </button>
 
                 </div>
             )}
