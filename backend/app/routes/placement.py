@@ -27,11 +27,11 @@ def start_test(
 
     questions_db = []
 
-    questions_db += get_questions_by_level(db, "A2", 2)
-    questions_db += get_questions_by_level(db, "B1", 2)
-    questions_db += get_questions_by_level(db, "B2", 3)
-    questions_db += get_questions_by_level(db, "C1", 2)
-    questions_db += get_questions_by_level(db, "C2", 1)
+    questions_db += get_questions_by_level(db, "A2", 6)
+    questions_db += get_questions_by_level(db, "B1", 6)
+    questions_db += get_questions_by_level(db, "B2", 6)
+    questions_db += get_questions_by_level(db, "C1", 6)
+    questions_db += get_questions_by_level(db, "C2", 6)
 
     # remove duplicates
     unique_questions = {}
@@ -48,7 +48,8 @@ def start_test(
             "id": q.id,
             "question": q.question,
             "options": q.options,
-            "correct": q.correct
+            "correct": q.correct,
+            "difficulty": q.difficulty
         }
         for q in questions_db
     ]
@@ -91,7 +92,6 @@ def submit_test(
         return {"error": "No test found"}
 
     score = 0
-
     level_weights = {
         "A2": 1,
         "B1": 2,
@@ -106,6 +106,7 @@ def submit_test(
     else:
         questions = test.questions
 
+    summary = []
     for ans in answers.answers:
 
         question = next(
@@ -116,31 +117,43 @@ def submit_test(
         if not question:
             continue
 
-        if ans.answer == question["correct"]:
+        is_correct = ans.answer == question["correct"]
+        if is_correct:
             difficulty = question.get("difficulty", "A2")
             score += level_weights.get(difficulty, 1)
+        
+        summary.append({
+            "question": question["question"],
+            "user_answer": ans.answer,
+            "correct_answer": question["correct"],
+            "is_correct": is_correct
+        })
 
-    # CEFR scale (weighted)
-    if score <= 8:
+    # CEFR scale (weighted) - 30 questions model (max score 90)
+    if score <= 25:
         level = "A2"
-    elif score <= 14:
+    elif score <= 45:
         level = "B1"
-    elif score <= 20:
+    elif score <= 65:
         level = "B2"
-    elif score <= 26:
+    elif score <= 85:
         level = "C1"
     else:
         level = "C2"
 
-    current_user.level = level
+    # Re-obtener el usuario para que esté en la misma sesión 'db'
+    db_user = db.query(User).filter(User.id == current_user.id).first()
+    db_user.level = level
+    
     test.score = score
     test.completed = True
-
+    
     db.commit()
 
     return {
         "score": score,
-        "level": level
+        "level": level,
+        "summary": summary
     }
 
 @router.get("/result")
@@ -160,7 +173,7 @@ def get_placement_result(
     total_questions = len(test.questions)
 
     return {
-        "level": current_user.level,
+        "level": test.user.level,
         "score": test.score,
         "total_questions": total_questions
     }

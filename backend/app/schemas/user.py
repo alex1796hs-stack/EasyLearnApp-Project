@@ -2,13 +2,13 @@ from pydantic import BaseModel, EmailStr
 
 
 class UserCreate(BaseModel):
-    email: EmailStr
+    email: str
     password: str
 
 
 class UserResponse(BaseModel):
     id: int
-    email: EmailStr
+    email: str
 
     class Config:
         from_attributes = True

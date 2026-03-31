@@ -67,9 +67,29 @@ function Placement() {
 
     if (result) {
         return (
-            <div className="p-6">
-                <h1 className="text-2xl font-bold">Your level:</h1>
-                <p className="text-xl mt-2">{result.level}</p>
+            <div className="p-6 max-w-2xl mx-auto">
+                <div className="bg-white p-6 rounded-xl shadow-lg text-center mb-8 border-t-8 border-blue-600">
+                    <h1 className="text-3xl font-bold text-gray-800">Tu nivel:</h1>
+                    <p className="text-6xl font-black text-blue-600 my-4">{result.level}</p>
+                    <p className="text-gray-500">Puntuación: {result.score}</p>
+                </div>
+
+                <div className="space-y-4">
+                    <h2 className="text-xl font-bold text-gray-700 mb-4">Resumen del test:</h2>
+                    {result.summary.map((item, idx) => (
+                        <div key={idx} className={`p-4 rounded-lg border-l-4 ${item.is_correct ? 'bg-green-50 border-green-500' : 'bg-red-50 border-red-500'}`}>
+                            <p className="font-medium text-gray-800 mb-2">{item.question}</p>
+                            <div className="text-sm flex flex-col gap-1">
+                                <p><span className="font-semibold">Tu respuesta:</span> {item.user_answer}</p>
+                                {!item.is_correct && (
+                                    <p className="text-green-700"><span className="font-semibold">Respuesta correcta:</span> {item.correct_answer}</p>
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                <p className="text-center text-gray-500 mt-8 italic">Serás redirigido al dashboard en unos segundos...</p>
             </div>
         )
     }
