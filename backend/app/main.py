@@ -7,10 +7,12 @@ from app.routes.lessons import router as lessons_router
 from app.routes.progress import router as progress_router
 from app.routes.dashboard import router as dashboard_router
 from app.routes.placement import router as placement_router
+from app.routes.answers import router as answers_router
 from app.models.user import User
 from app.models.lesson import Lesson
 from app.models.progress import Progress
 from app.models.question_bank import QuestionBank
+from app.models.user_answer import UserAnswer
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -37,6 +39,7 @@ app.include_router(lessons_router)
 app.include_router(progress_router)
 app.include_router(dashboard_router)
 app.include_router(placement_router)
+app.include_router(answers_router)
 
 # Intentar crear las tablas (con reintentos por si la DB no está lista)
 max_retries = 5
