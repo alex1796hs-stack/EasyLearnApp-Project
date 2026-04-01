@@ -33,11 +33,22 @@ function LessonDetail() {
 
     const question = lesson.questions[currentQuestion]
 
-    const handleAnswer = (option) => {
+    const handleAnswer = async (option) => {
         setSelected(option)
         setShowAnswer(true)
-        if (option === question.correct) {
+
+        const isCorrect = option === question.correct
+        if (isCorrect) {
             setScore((prev) => prev + 1)
+        }
+
+        try {
+            await api.post("/answers", {
+                question_id: question.id,
+                is_correct: isCorrect
+            })
+        } catch (err) {
+            console.error("Error saving answer:", err)
         }
     }
 
