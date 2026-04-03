@@ -44,6 +44,11 @@ function Placement() {
             answer
         }))
 
+        if (formattedAnswers.length === 0) {
+            alert("No has respondido ninguna pregunta. Por favor, selecciona alguna respuesta antes de enviar.")
+            return
+        }
+
         try {
 
             const res = await api.post("/placement/submit", {

@@ -49,5 +49,27 @@ def get_next_lesson(
             status_code=404,
             detail="No more lessons available"
         )
+        
+    from app.models.lesson_content import LessonContent
+    contents = db.query(LessonContent).filter(LessonContent.lesson_id == next_lesson.id).all()
+    
+    lesson_dict = next_lesson.__dict__.copy()
+    lesson_dict.pop("_sa_instance_state", None)
+    
+    lesson_dict["content"] = [
+        {"title": c.title, "explanation": c.explanation} for c in contents
+    ]
 
-    return next_lesson
+    from app.services.question_service import get_questions_by_level
+    practice_questions = get_questions_by_level(db, next_lesson.level, 3)
+
+    lesson_dict["questions"] = [
+        {
+            "id": q.id,
+            "question": q.question,
+            "options": q.options,
+            "correct": q.correct
+        } for q in practice_questions
+    ]
+
+    return lesson_dict
