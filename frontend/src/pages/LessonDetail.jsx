@@ -4,11 +4,13 @@ import api from "../api/api"
 function LessonDetail() {
 
     const [lesson, setLesson] = useState(null)
+    const [error, setError] = useState(null)
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const [selected, setSelected] = useState(null)
     const [showAnswer, setShowAnswer] = useState(false)
     const [finished, setFinished] = useState(false)
     const [score, setScore] = useState(0)
+    const [showPractice, setShowPractice] = useState(false)
 
     useEffect(() => {
 
@@ -18,12 +20,24 @@ function LessonDetail() {
                 setLesson(res.data)
             } catch (err) {
                 console.error(err)
+                if (err.response && err.response.status === 401) {
+                    setError("Sesión caducada. Por favor, cierra sesión y vuelve a entrar.")
+                } else {
+                    setError("Error cargando la lección o no hay más lecciones.")
+                }
             }
         }
 
         fetchLesson()
 
     }, [])
+
+    if (error) return (
+        <div className="text-center mt-10">
+            <p className="text-red-500 font-bold text-xl">{error}</p>
+            <button onClick={() => navigate("/dashboard")} className="mt-4 text-blue-500 underline">Volver al Dashboard</button>
+        </div>
+    )
 
     if (!lesson) return <p className="text-center mt-10">Loading...</p>
 
@@ -85,6 +99,34 @@ function LessonDetail() {
                 >
                     Back to Dashboard
                 </button>
+            </div>
+        )
+    }
+
+    if (!showPractice) {
+        return (
+            <div className="p-6 max-w-xl mx-auto">
+
+                <h1 className="text-xl font-bold mb-4">
+                    {lesson.title}
+                </h1>
+
+                {lesson.content && lesson.content.map((c, i) => (
+                    <div key={i} className="mb-6">
+                        <h2 className="font-semibold text-lg">{c.title}</h2>
+                        <p className="text-gray-700 whitespace-pre-line">
+                            {c.explanation}
+                        </p>
+                    </div>
+                ))}
+
+                <button
+                    onClick={() => setShowPractice(true)}
+                    className="bg-blue-500 text-white px-4 py-2 rounded"
+                >
+                    Start Practice
+                </button>
+
             </div>
         )
     }

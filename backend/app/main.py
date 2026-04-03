@@ -13,6 +13,7 @@ from app.models.lesson import Lesson
 from app.models.progress import Progress
 from app.models.question_bank import QuestionBank
 from app.models.user_answer import UserAnswer
+from app.models.lesson_content import LessonContent
 
 from dotenv import load_dotenv
 load_dotenv()

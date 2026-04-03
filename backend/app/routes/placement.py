@@ -108,7 +108,6 @@ def submit_test(
 
     summary = []
     for ans in answers.answers:
-
         question = next(
             (q for q in questions if q["id"] == ans.question_id),
             None
@@ -129,14 +128,14 @@ def submit_test(
             "is_correct": is_correct
         })
 
-    # CEFR scale (weighted) - 30 questions model (max score 90)
-    if score <= 25:
+    # CEFR scale (weighted) - 27 questions model (max score 87)
+    if score <= 17:
         level = "A2"
-    elif score <= 45:
+    elif score <= 34:
         level = "B1"
-    elif score <= 65:
+    elif score <= 52:
         level = "B2"
-    elif score <= 85:
+    elif score <= 70:
         level = "C1"
     else:
         level = "C2"

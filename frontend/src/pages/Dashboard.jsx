@@ -78,6 +78,13 @@ function Dashboard() {
                         🚀 Ir a mis lecciones
                     </button>
 
+                    <button 
+                        onClick={() => navigate("/placement")}
+                        className="mt-3 w-full bg-gray-100 text-gray-700 font-medium py-2 rounded-lg hover:bg-gray-200 transition"
+                    >
+                        🔄 Rehacer Test de Nivel
+                    </button>
+
                 </div>
             )}
 
