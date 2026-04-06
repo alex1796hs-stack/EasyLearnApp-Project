@@ -60,8 +60,8 @@ def get_next_lesson(
         {"title": c.title, "explanation": c.explanation} for c in contents
     ]
 
-    from app.services.question_service import get_questions_by_level
-    practice_questions = get_questions_by_level(db, next_lesson.level, 3)
+    from app.services.question_service import get_questions_by_topic
+    practice_questions = get_questions_by_topic(db, next_lesson.topic, 15)
 
     lesson_dict["questions"] = [
         {
