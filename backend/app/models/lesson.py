@@ -9,3 +9,4 @@ class Lesson(Base):
     title = Column(String, nullable=False)
     topic = Column(String, nullable=False)
     level = Column(String, nullable=False)  # A1, B2, C1 etc.
+    order = Column(Integer, nullable=False)
