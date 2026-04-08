@@ -7,5 +7,6 @@ class Lesson(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
-    content = Column(Text, nullable=False)
+    topic = Column(String, nullable=False)
     level = Column(String, nullable=False)  # A1, B2, C1 etc.
+    order = Column(Integer, nullable=False)

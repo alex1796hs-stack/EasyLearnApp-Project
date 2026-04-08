@@ -20,3 +20,13 @@ def get_questions_by_level(db: Session, level: str, limit: int):
         .limit(limit)
         .all()
     )
+
+
+def get_questions_by_topic(db: Session, topic: str, limit: int):
+    return (
+        db.query(QuestionBank)
+        .filter(QuestionBank.topic == topic)
+        .order_by(func.random())
+        .limit(limit)
+        .all()
+    )

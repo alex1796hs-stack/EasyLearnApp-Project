@@ -8,5 +8,8 @@ class LessonContent(Base):
 
     lesson_id = Column(Integer, ForeignKey("lessons.id"))
 
+    type = Column(String, nullable=False)  # 🔥 nuevo (intro, concept, etc)
+    order = Column(Integer, nullable=False)  # 🔥 nuevo (orden)
+
     title = Column(String, nullable=False)
     explanation = Column(String, nullable=False)
