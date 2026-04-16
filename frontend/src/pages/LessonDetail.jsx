@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import api from "../api/api"
 
 function LessonDetail() {
@@ -11,6 +12,7 @@ function LessonDetail() {
     const [finished, setFinished] = useState(false)
     const [score, setScore] = useState(0)
     const [showPractice, setShowPractice] = useState(false)
+    const navigate = useNavigate()
 
     useEffect(() => {
 
@@ -107,6 +109,13 @@ function LessonDetail() {
         return (
             <div className="p-6 max-w-xl mx-auto">
 
+                <button
+                    onClick={() => navigate("/dashboard")}
+                    className="mb-4 text-blue-600 hover:text-blue-800 font-medium text-sm"
+                >
+                    ← Volver al Dashboard
+                </button>
+
                 <h1 className="text-xl font-bold mb-4">
                     {lesson.title}
                 </h1>
@@ -133,6 +142,13 @@ function LessonDetail() {
 
     return (
         <div className="p-6 max-w-xl mx-auto">
+
+            <button
+                onClick={() => navigate("/dashboard")}
+                className="mb-4 text-blue-600 hover:text-blue-800 font-medium text-sm"
+            >
+                ← Volver al Dashboard
+            </button>
 
             <h1 className="text-xl font-bold mb-6">
                 {lesson.title}
