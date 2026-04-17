@@ -57,11 +57,6 @@ function Placement() {
 
             setResult(res.data)
 
-            // redirigir después de 2s
-            setTimeout(() => {
-                navigate("/dashboard")
-            }, 2000)
-
         } catch (err) {
             console.error(err)
         }
@@ -94,7 +89,12 @@ function Placement() {
                     ))}
                 </div>
 
-                <p className="text-center text-gray-500 mt-8 italic">Serás redirigido al dashboard en unos segundos...</p>
+                <button
+                    onClick={() => navigate("/dashboard")}
+                    className="mt-8 bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                >
+                    Ir al Dashboard →
+                </button>
             </div>
         )
     }
@@ -118,9 +118,8 @@ function Placement() {
                         <button
                             key={opt}
                             onClick={() => handleAnswer(q.id, opt)}
-                            className={`block border p-2 mb-2 w-full text-left transition-colors ${
-                                answers[q.id] === opt ? "bg-blue-100 border-blue-500 font-medium" : "hover:bg-gray-50"
-                            }`}
+                            className={`block border p-2 mb-2 w-full text-left transition-colors ${answers[q.id] === opt ? "bg-blue-100 border-blue-500 font-medium" : "hover:bg-gray-50"
+                                }`}
                         >
                             {opt}
                         </button>
