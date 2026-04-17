@@ -36,58 +36,98 @@ function Dashboard() {
 
     }, [])
 
-    if (loading) return <p className="p-6">Loading...</p>
+    if (loading) return (
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
+            <div className="w-8 h-8 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+    )
 
-    if (error) return <p className="p-6 text-red-500">{error}</p>
+    if (error) return (
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white">
+            <p className="text-red-400 p-6">{error}</p>
+        </div>
+    )
 
     return (
-        <div className="p-6">
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white pb-10">
 
-            <h1 className="text-2xl font-bold mb-4">
-                Dashboard
-            </h1>
+            <div className="absolute inset-0 opacity-10 pointer-events-none">
+                <div className="absolute top-10 left-10 w-72 h-72 bg-blue-500 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-500 rounded-full blur-3xl"></div>
+            </div>
 
-            {!data.level ? (
-                <div className="bg-blue-50 border-2 border-blue-200 p-6 rounded-xl shadow-sm text-center">
-                    <h2 className="text-xl font-bold text-blue-800 mb-2">
-                        ¡Bienvenido a EasyLearn!
-                    </h2>
-                    <p className="text-blue-600 mb-4">
-                        ¡Vamos a comprobar tu nivel para asignarte unos estudios adaptados a ti!
-                    </p>
-                    <button 
-                        onClick={() => navigate("/placement")}
-                        className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+            <div className="max-w-2xl mx-auto px-6 pt-10 relative z-10">
+                <div className="flex justify-between items-center mb-8">
+                    <h1 className="text-3xl font-black bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
+                        Dashboard
+                    </h1>
+                    <button
+                        onClick={() => navigate("/profile")}
+                        className="flex items-center gap-2 text-sm text-blue-300 hover:text-white font-medium transition-colors bg-white/5 px-4 py-2 rounded-xl border border-white/10 hover:bg-white/10"
                     >
-                        Empezar Test de Nivel
+                        👤 Mi Perfil
                     </button>
                 </div>
-            ) : (
-                <div className="bg-white p-4 rounded shadow">
 
-                    <p><strong>Level:</strong> {data.level}</p>
-                    <p><strong>Placement Score:</strong> {data.placement_score}</p>
-                    <p><strong>Completed Lessons:</strong> {data.completed_lessons}</p>
-                    <p><strong>Total Lessons:</strong> {data.total_lessons}</p>
-                    <p><strong>Progress:</strong> {data.progress_percentage}%</p>
-                    
-                    <button 
-                        onClick={() => navigate("/lessons")}
-                        className="mt-6 w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition shadow"
-                    >
-                        🚀 Ir a mis lecciones
-                    </button>
+                {!data.level ? (
+                    <div className="bg-white/5 backdrop-blur-sm border border-blue-500/30 p-8 rounded-2xl shadow-xl text-center">
+                        <h2 className="text-2xl font-bold text-white mb-3">
+                            ¡Bienvenido a EasyLearn!
+                        </h2>
+                        <p className="text-blue-200 mb-8 max-w-md mx-auto">
+                            ¡Vamos a comprobar tu nivel para asignarte unos estudios adaptados a ti!
+                        </p>
+                        <button
+                            onClick={() => navigate("/placement")}
+                            className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-8 py-3.5 rounded-xl font-semibold hover:from-blue-600 hover:to-indigo-700 transition-all shadow-lg shadow-blue-500/20 inline-block"
+                        >
+                            Empezar Test de Nivel
+                        </button>
+                    </div>
+                ) : (
+                    <div className="bg-white/5 backdrop-blur-sm border border-white/10 p-6 rounded-2xl shadow-xl">
 
-                    <button 
-                        onClick={() => navigate("/placement")}
-                        className="mt-3 w-full bg-gray-100 text-gray-700 font-medium py-2 rounded-lg hover:bg-gray-200 transition"
-                    >
-                        🔄 Rehacer Test de Nivel
-                    </button>
+                        <div className="grid grid-cols-2 gap-4 mb-8">
+                            <div className="bg-white/5 rounded-xl p-4 border border-white/5">
+                                <p className="text-gray-400 text-xs uppercase font-semibold mb-1">Nivel Actual</p>
+                                <p className="text-2xl font-bold text-white">{data.level}</p>
+                            </div>
+                            <div className="bg-white/5 rounded-xl p-4 border border-white/5">
+                                <p className="text-gray-400 text-xs uppercase font-semibold mb-1">Puntuación Test</p>
+                                <p className="text-2xl font-bold text-white">{data.placement_score}</p>
+                            </div>
+                            <div className="bg-white/5 rounded-xl p-4 border border-white/5 col-span-2">
+                                <p className="text-gray-400 text-xs uppercase font-semibold mb-1 flex justify-between">
+                                    <span>Progreso General</span>
+                                    <span>{data.completed_lessons} / {data.total_lessons} lecciones</span>
+                                </p>
+                                <p className="text-3xl font-bold text-white mb-2">{data.progress_percentage}%</p>
+                                <div className="w-full bg-white/10 rounded-full h-2">
+                                    <div
+                                        className="bg-gradient-to-r from-blue-400 to-indigo-500 h-2 rounded-full transition-all duration-500"
+                                        style={{ width: `${data.progress_percentage}%` }}
+                                    ></div>
+                                </div>
+                            </div>
+                        </div>
 
-                </div>
-            )}
+                        <button
+                            onClick={() => navigate("/lessons")}
+                            className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold py-3.5 rounded-xl hover:from-blue-600 hover:to-indigo-700 transition-all shadow-lg shadow-blue-500/20 mb-3"
+                        >
+                            Ir a mis lecciones
+                        </button>
 
+                        <button
+                            onClick={() => navigate("/placement")}
+                            className="w-full bg-white/5 border border-white/10 text-white font-medium py-3 rounded-xl hover:bg-white/10 transition-all"
+                        >
+                            Rehacer Test de Nivel
+                        </button>
+
+                    </div>
+                )}
+            </div>
         </div>
     )
 }
