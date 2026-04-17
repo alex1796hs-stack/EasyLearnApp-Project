@@ -8,7 +8,44 @@ function Placement() {
     const [answers, setAnswers] = useState({})
     const [loading, setLoading] = useState(true)
     const [result, setResult] = useState(null)
+    const [audioState, setAudioState] = useState({ state: 'idle', currentText: null })
     const navigate = useNavigate()
+
+    useEffect(() => {
+        return () => {
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel()
+        }
+    }, [])
+
+    const toggleAudio = (text) => {
+        if (!('speechSynthesis' in window)) {
+            alert("Tu navegador no soporta el sintetizador de voz.")
+            return
+        }
+
+        const synth = window.speechSynthesis
+
+        if (audioState.currentText === text) {
+            if (audioState.state === 'playing') {
+                synth.pause()
+                setAudioState({ currentText: text, state: 'paused' })
+            } else if (audioState.state === 'paused') {
+                synth.resume()
+                setAudioState({ currentText: text, state: 'playing' })
+            }
+        } else {
+            synth.cancel() // Stop any current audio
+            const cleanText = text.replace(/_{2,}/g, "blank")
+            const utterance = new SpeechSynthesisUtterance(cleanText)
+            utterance.lang = 'en-US'
+            
+            utterance.onend = () => setAudioState({ state: 'idle', currentText: null })
+            utterance.onerror = () => setAudioState({ state: 'idle', currentText: null })
+
+            synth.speak(utterance)
+            setAudioState({ currentText: text, state: 'playing' })
+        }
+    }
 
     // 🟢 cargar preguntas
     useEffect(() => {
@@ -136,7 +173,25 @@ function Placement() {
                     {questions.map((q, index) => (
                         <div key={q.id} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 shadow-xl">
                             <p className="text-sm text-blue-400 font-semibold mb-2">Pregunta {index + 1}</p>
-                            <p className="text-xl font-medium mb-6 leading-relaxed">{q.question}</p>
+                            
+                            <div className="flex items-start justify-between gap-4 mb-6">
+                                <p className="text-xl font-medium leading-relaxed">{q.question}</p>
+                                <button 
+                                    onClick={(e) => { e.stopPropagation(); toggleAudio(q.question); }}
+                                    className="shrink-0 p-2.5 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 hover:text-blue-300 transition-colors rounded-full border border-blue-500/20"
+                                    title={audioState.currentText === q.question && audioState.state === 'playing' ? "Pausar" : "Escuchar pronunciación"}
+                                >
+                                    {audioState.currentText === q.question && audioState.state === 'playing' ? (
+                                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                                        </svg>
+                                    ) : (
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.536 8.464a5 5 0 010 7.072M17.657 6.343a8 8 0 010 11.314M11 5L6 9H2v6h4l5 4V5z"></path>
+                                        </svg>
+                                    )}
+                                </button>
+                            </div>
 
                             <div className="grid gap-3">
                                 {q.options.map((opt) => (
