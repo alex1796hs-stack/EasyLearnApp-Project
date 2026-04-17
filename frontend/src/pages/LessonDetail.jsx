@@ -35,16 +35,26 @@ function LessonDetail() {
     }, [])
 
     if (error) return (
-        <div className="text-center mt-10">
-            <p className="text-red-500 font-bold text-xl">{error}</p>
-            <button onClick={() => navigate("/dashboard")} className="mt-4 text-blue-500 underline">Volver al Dashboard</button>
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white">
+            <div className="text-center p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
+                <p className="text-red-400 font-bold text-xl mb-4">{error}</p>
+                <button onClick={() => navigate("/dashboard")} className="text-blue-400 hover:text-blue-300 transition underline">← Volver al Dashboard</button>
+            </div>
         </div>
     )
 
-    if (!lesson) return <p className="text-center mt-10">Loading...</p>
+    if (!lesson) return (
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
+            <div className="w-8 h-8 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+    )
 
     if (!lesson.questions || lesson.questions.length === 0) {
-        return <p className="text-center mt-10">No questions available</p>
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white">
+                <p className="p-6 text-gray-400">No questions available</p>
+            </div>
+        )
     }
 
     const question = lesson.questions[currentQuestion]
@@ -91,105 +101,139 @@ function LessonDetail() {
     if (finished) {
         const percentage = Math.round((score / lesson.questions.length) * 100)
         return (
-            <div className="p-6 max-w-xl mx-auto text-center">
-                <h1 className="text-2xl font-bold mb-4">{lesson.title}</h1>
-                <p className="text-xl mb-2">🎉 ¡Lección completada!</p>
-                <p className="text-lg">Puntuación: {score}/{lesson.questions.length} ({percentage}%)</p>
-                <button
-                    onClick={() => window.location.href = "/dashboard"}
-                    className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-                >
-                    Back to Dashboard
-                </button>
+            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white flex items-center justify-center p-6">
+                <div className="max-w-md w-full bg-white/5 backdrop-blur-sm border border-white/10 p-8 rounded-2xl shadow-xl text-center">
+                    <h1 className="text-2xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">{lesson.title}</h1>
+                    <p className="text-5xl mb-4">🎉</p>
+                    <p className="text-xl font-medium mb-6">¡Lección completada!</p>
+                    <div className="bg-white/5 rounded-xl p-4 border border-white/5 mb-8">
+                        <p className="text-gray-400 text-xs uppercase font-semibold mb-1">Puntuación Final</p>
+                        <p className="text-3xl font-bold text-white mb-2">{percentage}%</p>
+                        <p className="text-sm text-gray-400">{score}/{lesson.questions.length} correctas</p>
+                    </div>
+                    <button
+                        onClick={() => window.location.href = "/dashboard"}
+                        className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold py-3.5 rounded-xl hover:from-blue-600 hover:to-indigo-700 transition-all shadow-lg shadow-blue-500/20"
+                    >
+                        Volver al Dashboard
+                    </button>
+                </div>
             </div>
         )
     }
 
     if (!showPractice) {
         return (
-            <div className="p-6 max-w-xl mx-auto">
+            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white">
+                <div className="absolute inset-0 opacity-10 pointer-events-none">
+                    <div className="absolute top-10 left-10 w-72 h-72 bg-blue-500 rounded-full blur-3xl"></div>
+                </div>
 
-                <button
-                    onClick={() => navigate("/dashboard")}
-                    className="mb-4 text-blue-600 hover:text-blue-800 font-medium text-sm"
-                >
-                    ← Volver al Dashboard
-                </button>
+                <div className="max-w-3xl mx-auto px-6 pt-8 pb-10 relative z-10">
+                    <button
+                        onClick={() => navigate("/dashboard")}
+                        className="mb-6 flex items-center gap-2 text-blue-300 hover:text-white transition-colors text-sm font-medium"
+                    >
+                        <span>←</span> Volver al Dashboard
+                    </button>
 
-                <h1 className="text-xl font-bold mb-4">
-                    {lesson.title}
-                </h1>
+                    <h1 className="text-3xl font-black mb-8 bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
+                        {lesson.title}
+                    </h1>
 
-                {lesson.content && lesson.content.map((c, i) => (
-                    <div key={i} className="mb-6">
-                        <h2 className="font-semibold text-lg">{c.title}</h2>
-                        <p className="text-gray-700 whitespace-pre-line">
-                            {c.explanation}
-                        </p>
+                    <div className="space-y-6 mb-10">
+                        {lesson.content && lesson.content.map((c, i) => (
+                            <div key={i} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 shadow-lg">
+                                <h2 className="font-bold text-xl text-blue-300 mb-3">{c.title}</h2>
+                                <p className="text-gray-300 whitespace-pre-line leading-relaxed">
+                                    {c.explanation}
+                                </p>
+                            </div>
+                        ))}
                     </div>
-                ))}
 
-                <button
-                    onClick={() => setShowPractice(true)}
-                    className="bg-blue-500 text-white px-4 py-2 rounded"
-                >
-                    Start Practice
-                </button>
-
+                    <button
+                        onClick={() => setShowPractice(true)}
+                        className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold py-4 rounded-xl hover:from-blue-600 hover:to-indigo-700 transition-all shadow-lg shadow-blue-500/20 text-lg flex items-center justify-center gap-2"
+                    >
+                        📝 Empezar Práctica
+                    </button>
+                </div>
             </div>
         )
     }
 
     return (
-        <div className="p-6 max-w-xl mx-auto">
-
-            <button
-                onClick={() => navigate("/dashboard")}
-                className="mb-4 text-blue-600 hover:text-blue-800 font-medium text-sm"
-            >
-                ← Volver al Dashboard
-            </button>
-
-            <h1 className="text-xl font-bold mb-6">
-                {lesson.title}
-            </h1>
-
-            <p className="mb-4 text-sm text-gray-500">
-                Question {currentQuestion + 1} / {lesson.questions.length}
-            </p>
-
-            <p className="mb-4">
-                {question.question}
-            </p>
-
-            <div className="space-y-3">
-                {question.options.map((opt, i) => (
-                    <button
-                        key={i}
-                        onClick={() => !showAnswer && handleAnswer(opt)}
-                        className={`w-full p-2 border rounded ${showAnswer
-                            ? opt === question.correct
-                                ? "bg-green-200"
-                                : opt === selected
-                                    ? "bg-red-200"
-                                    : ""
-                            : ""
-                            }`}
-                    >
-                        {opt}
-                    </button>
-                ))}
-            </div>
-
-            {showAnswer && (
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white">
+            <div className="max-w-2xl mx-auto px-6 pt-8 pb-10">
                 <button
-                    onClick={nextQuestion}
-                    className="mt-4 w-full bg-blue-500 text-white p-2 rounded"
+                    onClick={() => navigate("/dashboard")}
+                    className="mb-6 flex items-center gap-2 text-blue-300 hover:text-white transition-colors text-sm font-medium"
                 >
-                    Next
+                    <span>←</span> Salir de la lección
                 </button>
-            )}
 
+                <div className="flex items-center justify-between mb-6">
+                    <h1 className="text-xl font-bold text-gray-300 line-clamp-1">
+                        {lesson.title}
+                    </h1>
+                    <span className="shrink-0 bg-white/10 text-blue-300 text-xs font-bold px-3 py-1 rounded-full border border-white/10">
+                        {currentQuestion + 1} / {lesson.questions.length}
+                    </span>
+                </div>
+
+                <div className="w-full bg-white/10 rounded-full h-1.5 mb-8">
+                    <div
+                        className="bg-gradient-to-r from-blue-400 to-indigo-500 h-1.5 rounded-full transition-all duration-300"
+                        style={{ width: `${((currentQuestion) / lesson.questions.length) * 100}%` }}
+                    ></div>
+                </div>
+
+                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 lg:p-8 shadow-xl mb-6">
+                    <p className="text-xl font-medium leading-relaxed mb-8">
+                        {question.question}
+                    </p>
+
+                    <div className="space-y-3">
+                        {question.options.map((opt, i) => {
+                            const isCorrectAnswer = showAnswer && opt === question.correct;
+                            const isWrongSelected = showAnswer && opt === selected && opt !== question.correct;
+                            
+                            let btnStyles = "bg-white/5 border-white/10 hover:bg-white/10 hover:border-blue-500/50";
+                            
+                            if (showAnswer) {
+                                if (isCorrectAnswer) {
+                                    btnStyles = "bg-green-500/20 border-green-500 text-green-300 font-medium";
+                                } else if (isWrongSelected) {
+                                    btnStyles = "bg-red-500/20 border-red-500 text-red-300 font-medium";
+                                } else {
+                                    btnStyles = "bg-white/5 border-white/10 opacity-50";
+                                }
+                            }
+
+                            return (
+                                <button
+                                    key={i}
+                                    onClick={() => !showAnswer && handleAnswer(opt)}
+                                    className={`w-full text-left p-4 rounded-xl border transition-all duration-300 ${btnStyles}`}
+                                >
+                                    {opt}
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+
+                {showAnswer && (
+                    <button
+                        onClick={nextQuestion}
+                        className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold py-4 rounded-xl hover:from-blue-600 hover:to-indigo-700 transition-all shadow-lg shadow-blue-500/20"
+                    >
+                        Siguiente pregunta →
+                    </button>
+                )}
+
+            </div>
         </div>
     )
 }

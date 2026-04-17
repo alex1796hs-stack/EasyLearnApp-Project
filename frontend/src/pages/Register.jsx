@@ -28,39 +28,52 @@ const Register = () => {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md w-80">
-                <h2 className="text-xl font-bold mb-4">Register</h2>
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 flex items-center justify-center relative overflow-hidden text-white px-4">
+            <div className="absolute inset-0 opacity-10 pointer-events-none">
+                <div className="absolute top-10 left-10 w-72 h-72 bg-blue-500 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-500 rounded-full blur-3xl"></div>
+            </div>
+
+            <form onSubmit={handleSubmit} className="bg-white/5 backdrop-blur-sm border border-white/10 p-8 rounded-2xl shadow-xl w-full max-w-sm relative z-10">
+                <h2 className="text-3xl font-black mb-8 text-center bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
+                    Crear cuenta
+                </h2>
 
                 {error && (
-                    <p className="text-red-500 text-sm mb-4 text-center bg-red-50 p-2 rounded border border-red-200">
+                    <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm p-3 rounded-xl mb-6 text-center">
                         {error}
-                    </p>
+                    </div>
                 )}
 
-                <input
-                    type="email"
-                    placeholder="Email"
-                    className="w-full mb-3 p-2 border"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
+                <div className="mb-5">
+                    <label className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2 block">Email</label>
+                    <input
+                        type="email"
+                        placeholder="tu@email.com"
+                        className="w-full bg-white/5 border border-white/10 text-white placeholder-gray-500 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
 
-                <input
-                    type="password"
-                    placeholder="Password"
-                    className="w-full mb-3 p-2 border"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+                <div className="mb-8">
+                    <label className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2 block">Contraseña</label>
+                    <input
+                        type="password"
+                        placeholder="••••••••"
+                        className="w-full bg-white/5 border border-white/10 text-white placeholder-gray-500 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
 
-                <button className="w-full bg-blue-500 text-white p-2">
-                    Register
+                <button className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold py-3.5 rounded-xl hover:from-blue-600 hover:to-indigo-700 transition-all shadow-lg shadow-blue-500/20 flex items-center justify-center">
+                    Registrarse
                 </button>
 
-                <p className="mt-4 text-center text-sm text-gray-600">
+                <p className="mt-8 text-center text-sm text-gray-400">
                     ¿Ya tienes una cuenta?{" "}
-                    <Link to="/login" className="text-blue-600 hover:underline">
+                    <Link to="/login" className="text-blue-400 hover:text-blue-300 font-medium transition-colors">
                         Inicia sesión
                     </Link>
                 </p>

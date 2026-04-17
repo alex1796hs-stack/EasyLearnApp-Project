@@ -6,6 +6,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Register from './pages/Register';
 import Lessons from './pages/Lessons';
 import LessonDetail from './pages/LessonDetail';
+import Profile from './pages/Profile';
 
 function App() {
   return (
@@ -36,14 +37,28 @@ function App() {
           element={<ProtectedRoute><LessonDetail /></ProtectedRoute>}
         />
         <Route
+          path="/profile"
+          element={<ProtectedRoute><Profile /></ProtectedRoute>}
+        />
+        <Route
           path="/"
           element={
             <ProtectedRoute>
-              <div className="min-h-screen flex items-center justify-center bg-blue-500">
-                <h1 className="text-white text-4xl font-bold">
-                  EasyLearn.
-                </h1>
-                <p className="text-white text-2xl font-bold">Making your life easier.</p>
+              <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 flex items-center justify-center relative overflow-hidden text-white">
+                <div className="absolute inset-0 opacity-10 pointer-events-none">
+                    <div className="absolute top-10 left-10 w-72 h-72 bg-blue-500 rounded-full blur-3xl"></div>
+                    <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-500 rounded-full blur-3xl"></div>
+                </div>
+                
+                <div className="relative text-center z-10 px-6">
+                    <h1 className="text-5xl font-black bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent mb-4">
+                        EasyLearn.
+                    </h1>
+                    <p className="text-gray-300 text-xl font-medium mb-8">Making your life easier.</p>
+                    <a href="/dashboard" className="inline-block bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold px-8 py-3 rounded-xl hover:from-blue-600 hover:to-indigo-700 transition-all shadow-lg shadow-blue-500/20">
+                        Ir al Dashboard
+                    </a>
+                </div>
               </div>
             </ProtectedRoute>
           }
