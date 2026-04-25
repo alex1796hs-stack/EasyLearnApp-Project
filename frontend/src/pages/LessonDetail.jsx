@@ -12,7 +12,14 @@ function LessonDetail() {
     const [finished, setFinished] = useState(false)
     const [score, setScore] = useState(0)
     const [showPractice, setShowPractice] = useState(false)
+    const [audioState, setAudioState] = useState({ state: 'idle', currentText: null })
     const navigate = useNavigate()
+
+    useEffect(() => {
+        return () => {
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel()
+        }
+    }, [])
 
     useEffect(() => {
 
@@ -58,6 +65,36 @@ function LessonDetail() {
     }
 
     const question = lesson.questions[currentQuestion]
+
+    const toggleAudio = (text) => {
+        if (!('speechSynthesis' in window)) {
+            alert("Tu navegador no soporta el sintetizador de voz.")
+            return
+        }
+
+        const synth = window.speechSynthesis
+
+        if (audioState.currentText === text) {
+            if (audioState.state === 'playing') {
+                synth.pause()
+                setAudioState({ currentText: text, state: 'paused' })
+            } else if (audioState.state === 'paused') {
+                synth.resume()
+                setAudioState({ currentText: text, state: 'playing' })
+            }
+        } else {
+            synth.cancel() // Stop any current audio
+            const cleanText = text.replace(/_{2,}/g, "blank")
+            const utterance = new SpeechSynthesisUtterance(cleanText)
+            utterance.lang = 'en-US'
+            
+            utterance.onend = () => setAudioState({ state: 'idle', currentText: null })
+            utterance.onerror = () => setAudioState({ state: 'idle', currentText: null })
+
+            synth.speak(utterance)
+            setAudioState({ currentText: text, state: 'playing' })
+        }
+    }
 
     const handleAnswer = async (option) => {
         setSelected(option)
@@ -144,7 +181,24 @@ function LessonDetail() {
                     <div className="space-y-6 mb-10">
                         {lesson.content && lesson.content.map((c, i) => (
                             <div key={i} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 shadow-lg">
-                                <h2 className="font-bold text-xl text-blue-300 mb-3">{c.title}</h2>
+                                <div className="flex items-start justify-between gap-4 mb-3">
+                                    <h2 className="font-bold text-xl text-blue-300">{c.title}</h2>
+                                    <button 
+                                        onClick={(e) => { e.stopPropagation(); toggleAudio(c.explanation); }}
+                                        className="shrink-0 p-2 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 hover:text-blue-300 transition-colors rounded-full border border-blue-500/20"
+                                        title={audioState.currentText === c.explanation && audioState.state === 'playing' ? "Pausar" : "Escuchar explicación"}
+                                    >
+                                        {audioState.currentText === c.explanation && audioState.state === 'playing' ? (
+                                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                                            </svg>
+                                        ) : (
+                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.536 8.464a5 5 0 010 7.072M17.657 6.343a8 8 0 010 11.314M11 5L6 9H2v6h4l5 4V5z"></path>
+                                            </svg>
+                                        )}
+                                    </button>
+                                </div>
                                 <p className="text-gray-300 whitespace-pre-line leading-relaxed">
                                     {c.explanation}
                                 </p>
@@ -190,9 +244,26 @@ function LessonDetail() {
                 </div>
 
                 <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 lg:p-8 shadow-xl mb-6">
-                    <p className="text-xl font-medium leading-relaxed mb-8">
-                        {question.question}
-                    </p>
+                    <div className="flex items-start justify-between gap-4 mb-8">
+                        <p className="text-xl font-medium leading-relaxed">
+                            {question.question}
+                        </p>
+                        <button 
+                            onClick={(e) => { e.stopPropagation(); toggleAudio(question.question); }}
+                            className="shrink-0 p-2.5 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 hover:text-blue-300 transition-colors rounded-full border border-blue-500/20"
+                            title={audioState.currentText === question.question && audioState.state === 'playing' ? "Pausar" : "Escuchar pronunciación"}
+                        >
+                            {audioState.currentText === question.question && audioState.state === 'playing' ? (
+                                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                                </svg>
+                            ) : (
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.536 8.464a5 5 0 010 7.072M17.657 6.343a8 8 0 010 11.314M11 5L6 9H2v6h4l5 4V5z"></path>
+                                </svg>
+                            )}
+                        </button>
+                    </div>
 
                     <div className="space-y-3">
                         {question.options.map((opt, i) => {

@@ -47,6 +47,19 @@ def get_profile(
         UserAnswer.is_correct == True
     ).count()
     accuracy = round((correct_answers / total_answers * 100), 1) if total_answers > 0 else 0
+    
+    # Activity dates (distinct days)
+    # Get dates from UserAnswer, Progress, and PlacementTest
+    answer_dates = db.query(func.date(UserAnswer.created_at)).filter(UserAnswer.user_id == current_user.id).distinct().all()
+    progress_dates = db.query(func.date(Progress.created_at)).filter(Progress.user_id == current_user.id).distinct().all()
+    placement_dates = db.query(func.date(PlacementTest.created_at)).filter(PlacementTest.user_id == current_user.id, PlacementTest.completed == True).distinct().all()
+    
+    # Combine everything in a set for unique days
+    all_dates = set([d[0] for d in answer_dates if d[0]])
+    all_dates.update([d[0] for d in progress_dates if d[0]])
+    all_dates.update([d[0] for d in placement_dates if d[0]])
+    
+    activity_dates = sorted(list(all_dates))
 
     return {
         "email": current_user.email,
@@ -58,4 +71,5 @@ def get_profile(
         "total_answers": total_answers,
         "correct_answers": correct_answers,
         "accuracy": accuracy,
+        "activity_dates": activity_dates
     }

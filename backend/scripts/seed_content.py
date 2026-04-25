@@ -15,7 +15,8 @@ def seed_content():
         id=1, 
         title="Unit 1: Grammar - Present Time", 
         topic="present time", 
-        level="C1"
+        level="C1",
+        order=1
     )
     db.add(lesson)
     db.commit()
@@ -28,6 +29,8 @@ def seed_content():
     contents = [
         LessonContent(
             lesson_id=1,
+            type="theory",
+            order=1,
             title="1. Present Simple",
             explanation="""
 We use the present simple for:
@@ -40,6 +43,8 @@ We use the present simple for:
         ),
         LessonContent(
             lesson_id=1,
+            type="theory",
+            order=2,
             title="2. Present Continuous",
             explanation="""
 We use the present continuous for:
@@ -52,6 +57,8 @@ We use the present continuous for:
         ),
         LessonContent(
             lesson_id=1,
+            type="theory",
+            order=3,
             title="3. Present Perfect Simple",
             explanation="""
 We use the present perfect simple for:
@@ -63,6 +70,8 @@ We use the present perfect simple for:
         ),
         LessonContent(
             lesson_id=1,
+            type="theory",
+            order=4,
             title="4. Present Perfect Continuous",
             explanation="""
 We use the present perfect continuous for:
@@ -73,6 +82,8 @@ We use the present perfect continuous for:
         ),
         LessonContent(
             lesson_id=1,
+            type="theory",
+            order=5,
             title="5. Stative Verbs",
             explanation="""
 Stative verbs describe states, not actions, and are not typically used in continuous tenses.
