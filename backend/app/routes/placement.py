@@ -86,7 +86,7 @@ def submit_test(
     test = db.query(PlacementTest).filter(
         PlacementTest.user_id == current_user.id,
         PlacementTest.completed == False
-    ).first()
+    ).order_by(PlacementTest.id.desc()).first()
 
     if not test:
         return {"error": "No test found"}
@@ -107,6 +107,7 @@ def submit_test(
         questions = test.questions
 
     summary = []
+    saved_answers = []
     for ans in answers.answers:
         question = next(
             (q for q in questions if q["id"] == ans.question_id),
@@ -120,6 +121,12 @@ def submit_test(
         if is_correct:
             difficulty = question.get("difficulty", "A2")
             score += level_weights.get(difficulty, 1)
+            
+        saved_answers.append({
+            "question_id": ans.question_id,
+            "user_answer": ans.answer,
+            "is_correct": is_correct
+        })
         
         summary.append({
             "question": question["question"],
@@ -128,14 +135,16 @@ def submit_test(
             "is_correct": is_correct
         })
 
-    # CEFR scale (weighted) - 27 questions model (max score 87)
-    if score <= 17:
+    # CEFR scale (weighted) - 30 questions model (max score around 90-100)
+    if score <= 10:
+        level = "A1"
+    elif score <= 25:
         level = "A2"
-    elif score <= 34:
+    elif score <= 45:
         level = "B1"
-    elif score <= 52:
+    elif score <= 65:
         level = "B2"
-    elif score <= 70:
+    elif score <= 85:
         level = "C1"
     else:
         level = "C2"
@@ -146,6 +155,7 @@ def submit_test(
     
     test.score = score
     test.completed = True
+    test.user_answers = saved_answers
     
     db.commit()
 

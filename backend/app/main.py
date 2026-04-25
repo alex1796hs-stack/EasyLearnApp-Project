@@ -9,6 +9,7 @@ from app.routes.dashboard import router as dashboard_router
 from app.routes.placement import router as placement_router
 from app.routes.answers import router as answers_router
 from app.routes.profile import router as profile_router
+from app.routes.review import router as review_router
 from app.models.user import User
 from app.models.lesson import Lesson
 from app.models.progress import Progress
@@ -43,6 +44,7 @@ app.include_router(dashboard_router)
 app.include_router(placement_router)
 app.include_router(answers_router)
 app.include_router(profile_router)
+app.include_router(review_router)
 
 # Intentar crear las tablas (con reintentos por si la DB no está lista)
 max_retries = 5

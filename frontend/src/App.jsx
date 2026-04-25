@@ -7,6 +7,7 @@ import Register from './pages/Register';
 import Lessons from './pages/Lessons';
 import LessonDetail from './pages/LessonDetail';
 import Profile from './pages/Profile';
+import SmartReview from './pages/SmartReview';
 
 function App() {
   return (
@@ -39,6 +40,10 @@ function App() {
         <Route
           path="/profile"
           element={<ProtectedRoute><Profile /></ProtectedRoute>}
+        />
+        <Route
+          path="/review"
+          element={<ProtectedRoute><SmartReview /></ProtectedRoute>}
         />
         <Route
           path="/"

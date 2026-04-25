@@ -61,6 +61,47 @@ function Profile() {
         return email ? email.charAt(0).toUpperCase() : "?"
     }
 
+    const [viewDate, setViewDate] = useState(new Date())
+
+    const daysInMonth = (y, m) => new Date(y, m + 1, 0).getDate()
+    const firstDayOfMonth = (y, m) => new Date(y, m, 1).getDay()
+    
+    const year = viewDate.getFullYear()
+    const month = viewDate.getMonth()
+    const currentMonthName = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(viewDate)
+    
+    const totalDays = daysInMonth(year, month)
+    const prevMonthDays = daysInMonth(year, month - 1)
+    // Adjusting for Monday start
+    let startOffset = firstDayOfMonth(year, month) - 1
+    if (startOffset < 0) startOffset = 6
+
+    const calendarDays = []
+    // Previous month padding
+    for (let i = startOffset - 1; i >= 0; i--) {
+        calendarDays.push({ day: prevMonthDays - i, current: false })
+    }
+    // Current month days
+    for (let i = 1; i <= totalDays; i++) {
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`
+        const hasActivity = profile?.activity_dates?.includes(dateStr)
+        calendarDays.push({ day: i, current: true, active: hasActivity, date: dateStr })
+    }
+    // Next month padding
+    const remaining = 42 - calendarDays.length
+    for (let i = 1; i <= remaining; i++) {
+        calendarDays.push({ day: i, current: false })
+    }
+
+    const changeMonth = (offset) => {
+        setViewDate(new Date(year, month + offset, 1))
+    }
+
+    const isToday = (d) => {
+        const today = new Date()
+        return d === today.getDate() && month === today.getMonth() && year === today.getFullYear()
+    }
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white">
 
@@ -164,6 +205,63 @@ function Profile() {
                             </button>
                         </div>
                     )}
+                </div>
+
+                {/* Activity Calendar */}
+                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 mb-8">
+                    <div className="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 className="text-lg font-bold capitalize">{currentMonthName} {year}</h2>
+                            <p className="text-xs text-gray-400">Tu constancia de aprendizaje</p>
+                        </div>
+                        <div className="flex gap-2">
+                            <button onClick={() => changeMonth(-1)} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/></svg>
+                            </button>
+                            <button onClick={() => changeMonth(1)} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-7 gap-2 text-center mb-2">
+                        {['L', 'M', 'X', 'J', 'V', 'S', 'D'].map(d => (
+                            <span key={d} className="text-[10px] font-bold text-gray-500 uppercase">{d}</span>
+                        ))}
+                    </div>
+
+                    <div className="grid grid-cols-7 gap-2">
+                        {calendarDays.map((dayObj, i) => (
+                            <div 
+                                key={i}
+                                className={`
+                                    aspect-square flex items-center justify-center text-sm rounded-lg relative
+                                    ${dayObj.current ? 'text-white' : 'text-gray-600'}
+                                    ${dayObj.current && isToday(dayObj.day) ? 'border border-blue-500/50' : ''}
+                                    ${dayObj.active ? `bg-gradient-to-br ${levelGradient} shadow-lg shadow-blue-500/20 font-bold` : 'bg-white/5'}
+                                `}
+                            >
+                                {dayObj.day}
+                                {dayObj.active && (
+                                    <span className="absolute -top-1 -right-1 flex h-2 w-2">
+                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-40"></span>
+                                        <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                                    </span>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="mt-6 flex items-center gap-4 text-xs">
+                        <div className="flex items-center gap-1.5">
+                            <div className={`w-3 h-3 rounded bg-gradient-to-br ${levelGradient}`}></div>
+                            <span className="text-gray-400">Día activo</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                            <div className="w-3 h-3 rounded bg-white/5 border border-white/5"></div>
+                            <span className="text-gray-400">Sin actividad</span>
+                        </div>
+                    </div>
                 </div>
 
                 {/* Quick Actions */}
