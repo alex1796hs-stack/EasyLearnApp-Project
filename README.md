@@ -11,7 +11,76 @@
 
 <br/>
 
-*Read this in other languages: [English](#english) | [Español](#español)*
+*Read this in other languages: [English](#english) | [Nederlands](#nederlands) | [Español](#español)*
+
+
+<a name="nederlands"></a>
+## 🇳🇱 Nederlands
+
+### Overzicht
+
+**EasyLearn** is een moderne, data-gestuurde educatieve full-stack webapplicatie ontworpen om het leren van de Engelse taal te transformeren. Door gebruik te maken van adaptieve algoritmen en *spaced repetition*-methodologieën stemt het platform oefeningen dynamisch af op het individuele vaardigheidsniveau van elke student—over het gehele Europees Referentiekader (**ERK / CEFR**), van **A1 (Beginner)** tot **C2 (Gevorderd)**.
+
+Gebouwd met een responsieve **React + Vite + Tailwind CSS** frontend en een krachtige **Python + FastAPI + PostgreSQL** backend, biedt EasyLearn een vloeiende, interactieve en gamified leerervaring.
+
+---
+
+### ✨ Belangrijkste Kenmerken
+
+- **🎯 Diagnostische Niveautest (Placement Test):**
+  - Dynamische diagnostische toets die grammatica, woordenschat, lees- en luistervaardigheid evalueert.
+  - Bepaalt automatisch de sterke en zwakke punten en wijst een initieel ERK-niveau toe (A1–C2).
+  - Slaat gedetailleerde antwoordanalyses op om de vervolglessen te personaliseren.
+
+- **🔁 Slim Herhalingssysteem (Spaced Repetition):**
+  - Algoritme dat foute antwoorden registreert en patronen van veelvoorkomende vergissingen analyseert.
+  - Genereert op maat gemaakte herhalingsquizzen specifiek gericht op verbeterpunten.
+  - Ingebouwde **Text-to-Speech (TTS)** spraaksynthese voor natuurlijke Engelse uitspraakoefeningen.
+
+- **📅 Activiteiten-Heatmap & Consistentiekalender:**
+  - Visuele, op GitHub geïnspireerde heatmap die dagelijkse leerreeksen (*streaks*), voltooide tests en studieconsistentie bijhoudt.
+  - Stimuleert een gezonde dagelijkse leergewoonte via visuele feedback en mijlpalen.
+
+- **🏆 Leerlingprofiel & Gamificatie:**
+  - Ervaringspunten (XP), badges, niveauvoortgangsbalken en voltooide leereenheden.
+  - Historische testresultaten, uitgebreide foutenanalyses en prestatiegrafieken.
+
+- **💎 Modern Glassmorphic Dark UI:**
+  - Geavanceerde donkere interface met matglazen kaarten (*frosted glass*), sfeervolle kleurverlopen, responsieve lay-outs en soepele micro-animaties.
+
+- **🔒 Betrouwbare Beveiliging & Sessiebeheer:**
+  - Veilige gebruikersauthenticatie via **JWT** (JSON Web Tokens).
+  - Wachtwoordversleuteling met **Bcrypt**, beveiligde FastAPI-routes en geoptimaliseerde CORS-beveiliging.
+
+---
+
+### 🛠️ Architectuur & Technologieën
+
+| Laag | Technologieën |
+| :--- | :--- |
+| **Frontend** | React, Vite, Tailwind CSS, Lucide Icons, Axios, Web Speech API (TTS) |
+| **Backend** | Python 3.10+, FastAPI, SQLAlchemy, Pydantic, Uvicorn |
+| **Beveiliging** | OAuth2 Password Flow, Python-Jose (JWT), Passlib (Bcrypt) |
+| **Database** | PostgreSQL, Alembic (Database-migraties) |
+| **DevOps & Tools** | Docker, Docker Compose, Git, GitHub |
+
+---
+
+### 🚀 Aan de Slag
+
+#### Vereisten
+- [Node.js](https://nodejs.org/) (v18.0 of hoger)
+- [Python](https://www.python.org/) (v3.10 of hoger)
+- [Docker & Docker Compose](https://www.docker.com/) (Aanbevolen voor databasebeheer)
+
+---
+
+#### Optie 1: Snel starten met Docker Compose (Aanbevolen)
+
+1. **Kloon de repository:**
+   ```bash
+   git clone https://github.com/alex1796hs-stack/EasyLearnApp-Project.git
+   cd EasyLearnApp-Project
 
 ---
 
