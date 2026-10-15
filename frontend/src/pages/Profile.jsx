@@ -10,6 +10,7 @@ function Profile() {
     const [error, setError] = useState("")
     const navigate = useNavigate()
     const { logout } = useAuth()
+    const [viewDate, setViewDate] = useState(new Date())
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -62,15 +63,13 @@ function Profile() {
         return email ? email.charAt(0).toUpperCase() : "?"
     }
 
-    const [viewDate, setViewDate] = useState(new Date())
-
     const daysInMonth = (y, m) => new Date(y, m + 1, 0).getDate()
     const firstDayOfMonth = (y, m) => new Date(y, m, 1).getDay()
-    
+
     const year = viewDate.getFullYear()
     const month = viewDate.getMonth()
     const currentMonthName = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(viewDate)
-    
+
     const totalDays = daysInMonth(year, month)
     const prevMonthDays = daysInMonth(year, month - 1)
     // Adjusting for Monday start
@@ -214,10 +213,10 @@ function Profile() {
                         </div>
                         <div className="flex gap-2">
                             <button onClick={() => changeMonth(-1)} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/></svg>
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
                             </button>
                             <button onClick={() => changeMonth(1)} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
                             </button>
                         </div>
                     </div>
@@ -230,7 +229,7 @@ function Profile() {
 
                     <div className="grid grid-cols-7 gap-2">
                         {calendarDays.map((dayObj, i) => (
-                            <div 
+                            <div
                                 key={i}
                                 className={`
                                     aspect-square flex items-center justify-center text-sm rounded-lg relative
